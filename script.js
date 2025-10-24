@@ -1,6 +1,6 @@
 let chart;
 
-// Fungsi untuk format input angka dengan separator ribuan
+// Fungsi untuk format input angka dengan separator ribuan otomatis
 function formatNumberInput(input) {
   input.value = input.value.replace(/[^\d,]/g, ""); // hanya angka dan koma
   let parts = input.value.split(",");
@@ -8,16 +8,17 @@ function formatNumberInput(input) {
   input.value = number + (parts[1] ? "," + parts[1] : "");
 }
 
+// Terapkan format ke semua input numerik berbasis text
 document.querySelectorAll("input[type='text']").forEach(input => {
   input.addEventListener("input", () => formatNumberInput(input));
 });
 
+// Parse angka dari input terformat
 function parseNumber(value) {
   return Number(value.replace(/\./g, "").replace(",", ".")) || 0;
 }
 
 function hitung() {
-  // Ambil input & konversi
   const pad = parseNumber(document.getElementById("pad").value) * 1_000_000;
   const dau = parseNumber(document.getElementById("dau").value) * 1_000_000;
   const dak = parseNumber(document.getElementById("dak").value) * 1_000_000;
@@ -26,8 +27,8 @@ function hitung() {
   const pendapatan = parseNumber(document.getElementById("pendapatan").value) * 1_000_000;
   const temuan = Number(document.getElementById("temuan").value);
   const penduduk = parseNumber(document.getElementById("penduduk").value) * 1_000_000;
-  const asn = Number(document.getElementById("asn").value);
-  const pdrb = Number(document.getElementById("pdrb").value);
+  const asn = parseNumber(document.getElementById("asn").value);
+  const pdrb = parseNumber(document.getElementById("pdrb").value);
   const usia = Number(document.getElementById("usia").value);
   const jawa = Number(document.getElementById("jawa").value);
   const tipe = document.getElementById("tipe").value;
@@ -37,7 +38,7 @@ function hitung() {
   const totalTransfer = dau + dak + dbh;
   const rasio = belanja / pendapatan;
 
-  // Estimasi Korupsi (masih pakai anti log)
+  // Estimasi Korupsi
   const estimasiKorupsiLn = 21.872
     - 0.039 * Math.log(pad)
     - 0.013 * Math.log(totalTransfer)
@@ -69,12 +70,10 @@ function hitung() {
     + 0.435 * dummyKab
     + 9.678 * dummyKota;
 
-  // Tampilkan hasil
   document.getElementById("hasilKorupsi").innerText =
     "Rp " + estimasiKorupsi.toLocaleString("id-ID", { maximumFractionDigits: 2 });
   document.getElementById("hasilIpm").innerText = estimasiIpm.toFixed(2);
 
-  // Tampilkan grafik
   tampilkanGrafik(estimasiKorupsi, estimasiIpm);
 }
 
@@ -95,6 +94,7 @@ function tampilkanGrafik(korupsi, ipm) {
     scales: {
       y: {
         beginAtZero: true,
+        suggestedMax: Math.max(korupsi, 100),
         ticks: {
           callback: function (value) {
             if (value > 1_000_000_000) return value / 1_000_000_000 + " M";
@@ -118,12 +118,9 @@ function tampilkanGrafik(korupsi, ipm) {
 
   if (chart) {
     chart.data = data;
+    chart.options = options;
     chart.update();
   } else {
-    chart = new Chart(ctx, {
-      type: "bar",
-      data: data,
-      options: options
-    });
+    chart = new Chart(ctx, { type: "bar", data, options });
   }
 }
