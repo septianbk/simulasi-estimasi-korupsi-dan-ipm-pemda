@@ -1,3 +1,5 @@
+let chart; // variabel global untuk update grafik
+
 function hitung() {
   const pad = Number(document.getElementById("pad").value);
   const dau = Number(document.getElementById("dau").value);
@@ -51,6 +53,62 @@ function hitung() {
 
   const estimasiIpm = Math.exp(estimasiIpmLn);
 
-  document.getElementById("hasilKorupsi").innerText = estimasiKorupsi.toLocaleString("id-ID", { maximumFractionDigits: 2 });
+  // Tampilkan hasil
+  document.getElementById("hasilKorupsi").innerText =
+    "Rp " + estimasiKorupsi.toLocaleString("id-ID", { maximumFractionDigits: 2 });
   document.getElementById("hasilIpm").innerText = estimasiIpm.toFixed(2);
+
+  // Tampilkan grafik
+  tampilkanGrafik(estimasiKorupsi, estimasiIpm);
+}
+
+function tampilkanGrafik(korupsi, ipm) {
+  const ctx = document.getElementById("hasilChart").getContext("2d");
+
+  const data = {
+    labels: ["Estimasi Korupsi (Rp)", "Estimasi IPM (0–100)"],
+    datasets: [{
+      label: "Hasil Simulasi",
+      data: [korupsi, ipm],
+      backgroundColor: ["#1e88e5", "#43a047"],
+      borderRadius: 8,
+    }]
+  };
+
+  const options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          callback: function (value) {
+            if (value > 1000000000) return value / 1000000000 + " M";
+            if (value > 1000000) return value / 1000000 + " Jt";
+            return value;
+          }
+        }
+      }
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            return context.parsed.y.toLocaleString("id-ID");
+          }
+        }
+      }
+    }
+  };
+
+  // Update grafik jika sudah ada sebelumnya
+  if (chart) {
+    chart.data = data;
+    chart.update();
+  } else {
+    chart = new Chart(ctx, {
+      type: "bar",
+      data: data,
+      options: options
+    });
+  }
 }
