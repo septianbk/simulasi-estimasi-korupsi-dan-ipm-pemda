@@ -18,50 +18,17 @@
       <h2>🧾 Input Data</h2>
       <form id="simulasiForm">
         <div class="grid">
-          <div class="field">
-            <label>Pendapatan Asli Daerah (PAD)</label>
-            <input type="number" id="pad" required>
-          </div>
-          <div class="field">
-            <label>Dana Alokasi Umum (DAU)</label>
-            <input type="number" id="dau" required>
-          </div>
-          <div class="field">
-            <label>Dana Alokasi Khusus (DAK)</label>
-            <input type="number" id="dak" required>
-          </div>
-          <div class="field">
-            <label>Dana Bagi Hasil (DBH)</label>
-            <input type="number" id="dbh" required>
-          </div>
-          <div class="field">
-            <label>Total Belanja Daerah</label>
-            <input type="number" id="belanja" required>
-          </div>
-          <div class="field">
-            <label>Total Pendapatan Daerah</label>
-            <input type="number" id="pendapatan" required>
-          </div>
-          <div class="field">
-            <label>Jumlah Temuan BPK</label>
-            <input type="number" id="temuan" required>
-          </div>
-          <div class="field">
-            <label>Jumlah Penduduk</label>
-            <input type="number" id="penduduk" required>
-          </div>
-          <div class="field">
-            <label>Jumlah ASN</label>
-            <input type="number" id="asn" required>
-          </div>
-          <div class="field">
-            <label>PDRB</label>
-            <input type="number" id="pdrb" required>
-          </div>
-          <div class="field">
-            <label>Usia Otonomi (tahun)</label>
-            <input type="number" id="usia" required>
-          </div>
+          <div class="field"><label>Pendapatan Asli Daerah (PAD)</label><input type="number" id="pad" required></div>
+          <div class="field"><label>Dana Alokasi Umum (DAU)</label><input type="number" id="dau" required></div>
+          <div class="field"><label>Dana Alokasi Khusus (DAK)</label><input type="number" id="dak" required></div>
+          <div class="field"><label>Dana Bagi Hasil (DBH)</label><input type="number" id="dbh" required></div>
+          <div class="field"><label>Total Belanja Daerah</label><input type="number" id="belanja" required></div>
+          <div class="field"><label>Total Pendapatan Daerah</label><input type="number" id="pendapatan" required></div>
+          <div class="field"><label>Jumlah Temuan BPK</label><input type="number" id="temuan" required></div>
+          <div class="field"><label>Jumlah Penduduk</label><input type="number" id="penduduk" required></div>
+          <div class="field"><label>Jumlah ASN</label><input type="number" id="asn" required></div>
+          <div class="field"><label>PDRB</label><input type="number" id="pdrb" required></div>
+          <div class="field"><label>Usia Otonomi (tahun)</label><input type="number" id="usia" required></div>
           <div class="field">
             <label>Lokasi di Pulau Jawa?</label>
             <select id="jawa">
@@ -78,7 +45,6 @@
             </select>
           </div>
         </div>
-
         <button type="button" onclick="hitung()">🚀 Hitung Estimasi</button>
       </form>
     </section>
@@ -93,6 +59,8 @@
         <h3>Estimasi Indeks Pembangunan Manusia (IPM)</h3>
         <p id="hasilIpm">-</p>
       </div>
+
+      <canvas id="hasilChart" width="400" height="200"></canvas>
     </section>
   </main>
 
@@ -100,6 +68,7 @@
     <p>© 2025 Estimasi Korupsi & IPM | Dikembangkan oleh <strong>Septian Bayu Kristanto</strong></p>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
