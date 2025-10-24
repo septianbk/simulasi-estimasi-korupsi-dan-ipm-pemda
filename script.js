@@ -1,14 +1,31 @@
-let chart; // variabel global untuk update grafik
+let chart;
+
+// Fungsi untuk format input angka dengan separator ribuan
+function formatNumberInput(input) {
+  input.value = input.value.replace(/[^\d,]/g, ""); // hanya angka dan koma
+  let parts = input.value.split(",");
+  let number = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  input.value = number + (parts[1] ? "," + parts[1] : "");
+}
+
+document.querySelectorAll("input[type='text']").forEach(input => {
+  input.addEventListener("input", () => formatNumberInput(input));
+});
+
+function parseNumber(value) {
+  return Number(value.replace(/\./g, "").replace(",", ".")) || 0;
+}
 
 function hitung() {
-  const pad = Number(document.getElementById("pad").value);
-  const dau = Number(document.getElementById("dau").value);
-  const dak = Number(document.getElementById("dak").value);
-  const dbh = Number(document.getElementById("dbh").value);
-  const belanja = Number(document.getElementById("belanja").value);
-  const pendapatan = Number(document.getElementById("pendapatan").value);
+  // Ambil input & konversi
+  const pad = parseNumber(document.getElementById("pad").value) * 1_000_000;
+  const dau = parseNumber(document.getElementById("dau").value) * 1_000_000;
+  const dak = parseNumber(document.getElementById("dak").value) * 1_000_000;
+  const dbh = parseNumber(document.getElementById("dbh").value) * 1_000_000;
+  const belanja = parseNumber(document.getElementById("belanja").value) * 1_000_000;
+  const pendapatan = parseNumber(document.getElementById("pendapatan").value) * 1_000_000;
   const temuan = Number(document.getElementById("temuan").value);
-  const penduduk = Number(document.getElementById("penduduk").value);
+  const penduduk = parseNumber(document.getElementById("penduduk").value) * 1_000_000;
   const asn = Number(document.getElementById("asn").value);
   const pdrb = Number(document.getElementById("pdrb").value);
   const usia = Number(document.getElementById("usia").value);
@@ -20,7 +37,7 @@ function hitung() {
   const totalTransfer = dau + dak + dbh;
   const rasio = belanja / pendapatan;
 
-  // Rumus Estimasi Korupsi
+  // Estimasi Korupsi (masih pakai anti log)
   const estimasiKorupsiLn = 21.872
     - 0.039 * Math.log(pad)
     - 0.013 * Math.log(totalTransfer)
@@ -36,8 +53,9 @@ function hitung() {
 
   const estimasiKorupsi = Math.exp(estimasiKorupsiLn);
 
-  // Rumus Estimasi IPM
-  const estimasiIpmLn = 42.518
+  // Estimasi IPM (tanpa anti log)
+  const estimasiIpm =
+    42.518
     + 0.155 * Math.log(pad)
     + 0.284 * Math.log(totalTransfer)
     + 2.803 * Math.log(rasio)
@@ -50,8 +68,6 @@ function hitung() {
     + 0.027 * jawa
     + 0.435 * dummyKab
     + 9.678 * dummyKota;
-
-  const estimasiIpm = Math.exp(estimasiIpmLn);
 
   // Tampilkan hasil
   document.getElementById("hasilKorupsi").innerText =
@@ -81,8 +97,8 @@ function tampilkanGrafik(korupsi, ipm) {
         beginAtZero: true,
         ticks: {
           callback: function (value) {
-            if (value > 1000000000) return value / 1000000000 + " M";
-            if (value > 1000000) return value / 1000000 + " Jt";
+            if (value > 1_000_000_000) return value / 1_000_000_000 + " M";
+            if (value > 1_000_000) return value / 1_000_000 + " Jt";
             return value;
           }
         }
@@ -100,7 +116,6 @@ function tampilkanGrafik(korupsi, ipm) {
     }
   };
 
-  // Update grafik jika sudah ada sebelumnya
   if (chart) {
     chart.data = data;
     chart.update();
