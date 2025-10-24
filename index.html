@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulasi Estimasi Korupsi dan IPM</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Simulasi Estimasi Korupsi & IPM Pemerintah Daerah</h1>
+
+  <form id="simulasiForm">
+    <label>Pendapatan Asli Daerah (PAD):</label>
+    <input type="number" id="pad" required><br>
+
+    <label>Dana Alokasi Umum (DAU):</label>
+    <input type="number" id="dau" required><br>
+
+    <label>Dana Alokasi Khusus (DAK):</label>
+    <input type="number" id="dak" required><br>
+
+    <label>Dana Bagi Hasil (DBH):</label>
+    <input type="number" id="dbh" required><br>
+
+    <label>Total Belanja Daerah:</label>
+    <input type="number" id="belanja" required><br>
+
+    <label>Total Pendapatan Daerah:</label>
+    <input type="number" id="pendapatan" required><br>
+
+    <label>Jumlah Temuan BPK:</label>
+    <input type="number" id="temuan" required><br>
+
+    <label>Jumlah Penduduk:</label>
+    <input type="number" id="penduduk" required><br>
+
+    <label>Jumlah ASN:</label>
+    <input type="number" id="asn" required><br>
+
+    <label>PDRB:</label>
+    <input type="number" id="pdrb" required><br>
+
+    <label>Usia Otonomi (tahun):</label>
+    <input type="number" id="usia" required><br>
+
+    <label>Lokasi di Pulau Jawa?</label>
+    <select id="jawa">
+      <option value="0">Tidak</option>
+      <option value="1">Ya</option>
+    </select><br>
+
+    <label>Tipe Pemerintah Daerah:</label>
+    <select id="tipe">
+      <option value="kabupaten">Kabupaten</option>
+      <option value="kota">Kota</option>
+      <option value="lainnya">Lainnya</option>
+    </select><br>
+
+    <button type="button" onclick="hitung()">Hitung Estimasi</button>
+  </form>
+
+  <h2>Hasil Simulasi</h2>
+  <p><strong>Estimasi Korupsi:</strong> <span id="hasilKorupsi">-</span></p>
+  <p><strong>Estimasi IPM:</strong> <span id="hasilIpm">-</span></p>
+
+  <script src="script.js"></script>
+</body>
+</html>
